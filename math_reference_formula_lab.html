@@ -1,0 +1,2572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Reference &amp; Formula Lab</title>
+    <!-- Google Fonts: Inter for crisp UI & STIX Two Text for mathematical serif notation -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=STIX+Two+Text:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================================================
+           1. Editorial Academic Theme Variables
+           ========================================================================== */
+        :root {
+            --bg-page: #fafaf8;
+            --bg-surface: #ffffff;
+            --bg-math: #f4f4f0;
+            --bg-header: rgba(250, 250, 248, 0.92);
+            --bg-input: #ffffff;
+            --bg-step: #f8fafc;
+
+            --ink-primary: #1e293b;
+            --ink-secondary: #475569;
+            --ink-muted: #64748b;
+
+            --border-color: #e2e8f0;
+            --border-strong: #cbd5e1;
+
+            /* Category Accents */
+            --cat-algebra: #4f46e5;
+            --cat-algebra-bg: #eef2ff;
+            --cat-algebra-border: #c7d2fe;
+
+            --cat-geometry: #059669;
+            --cat-geometry-bg: #ecfdf5;
+            --cat-geometry-border: #a7f3d0;
+
+            --cat-trig: #d97706;
+            --cat-trig-bg: #fffbeb;
+            --cat-trig-border: #fde68a;
+
+            --cat-calculus: #e11d48;
+            --cat-calculus-bg: #fff1f2;
+            --cat-calculus-border: #fecdd3;
+
+            --shadow-xs: 0 1px 2px rgba(30, 41, 59, 0.04);
+            --shadow-sm: 0 4px 14px -2px rgba(30, 41, 59, 0.06), 0 2px 4px -2px rgba(30, 41, 59, 0.04);
+            --shadow-md: 0 10px 24px -4px rgba(30, 41, 59, 0.08);
+
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-math: 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif;
+        }
+
+        html.dark {
+            --bg-page: #0f172a;
+            --bg-surface: #1e293b;
+            --bg-math: #0b1120;
+            --bg-header: rgba(15, 23, 42, 0.92);
+            --bg-input: #0f172a;
+            --bg-step: #162032;
+
+            --ink-primary: #f8fafc;
+            --ink-secondary: #cbd5e1;
+            --ink-muted: #94a3b8;
+
+            --border-color: #334155;
+            --border-strong: #475569;
+
+            --cat-algebra: #818cf8;
+            --cat-algebra-bg: rgba(79, 70, 229, 0.16);
+            --cat-algebra-border: rgba(129, 140, 248, 0.3);
+
+            --cat-geometry: #34d399;
+            --cat-geometry-bg: rgba(5, 150, 105, 0.16);
+            --cat-geometry-border: rgba(52, 211, 153, 0.3);
+
+            --cat-trig: #fbbf24;
+            --cat-trig-bg: rgba(217, 119, 6, 0.16);
+            --cat-trig-border: rgba(251, 191, 36, 0.3);
+
+            --cat-calculus: #fb7185;
+            --cat-calculus-bg: rgba(225, 29, 72, 0.16);
+            --cat-calculus-border: rgba(251, 113, 133, 0.3);
+
+            --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.25);
+            --shadow-sm: 0 4px 14px -2px rgba(0, 0, 0, 0.35);
+            --shadow-md: 0 10px 24px -4px rgba(0, 0, 0, 0.45);
+        }
+
+        /* ==========================================================================
+           2. Base Reset & Mathematical Typography
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-page);
+            color: var(--ink-primary);
+            line-height: 1.6;
+            transition: background-color 0.25s ease, color 0.25s ease;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 1.25rem;
+        }
+
+        .math-serif, var {
+            font-family: var(--font-math);
+        }
+
+        var {
+            font-style: italic;
+            font-weight: 600;
+            color: var(--ink-primary);
+        }
+
+        /* Stacked Fractions */
+        .frac {
+            display: inline-flex;
+            flex-direction: column;
+            vertical-align: middle;
+            text-align: center;
+            font-size: 0.9em;
+            margin: 0 0.2em;
+            line-height: 1.15;
+        }
+
+        .frac > span:first-child {
+            border-bottom: 1.5px solid currentColor;
+            padding: 0 0.28em 0.12em;
+        }
+
+        .frac > span:last-child {
+            padding: 0.12em 0.28em 0;
+        }
+
+        /* Radical Sign */
+        .sqrt {
+            display: inline-flex;
+            align-items: baseline;
+        }
+
+        .sqrt-body {
+            border-top: 1.3px solid currentColor;
+            padding: 0 0.15em;
+        }
+
+        /* Integral Symbol & Bounds */
+        .int-wrap {
+            display: inline-flex;
+            align-items: center;
+            vertical-align: middle;
+            margin-right: 0.2em;
+        }
+
+        .int-symbol {
+            font-size: 1.55em;
+            line-height: 1;
+        }
+
+        .int-bounds {
+            display: inline-flex;
+            flex-direction: column;
+            justify-content: space-between;
+            font-size: 0.68em;
+            line-height: 1.1;
+            margin-left: 0.1em;
+            height: 2.1em;
+        }
+
+        /* ==========================================================================
+           3. Sticky Header, Filter Tabs & Search Bar
+           ========================================================================== */
+        header.site-header {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background: var(--bg-header);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header-top {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1rem 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .brand-mark {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--ink-primary);
+            color: var(--bg-surface);
+            font-family: var(--font-math);
+            font-size: 1.45rem;
+            font-weight: 700;
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+        }
+
+        .brand h1 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        .brand p {
+            font-size: 0.78rem;
+            color: var(--ink-muted);
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            flex: 1;
+            max-width: 520px;
+            justify-content: flex-end;
+        }
+
+        .search-wrap {
+            position: relative;
+            flex: 1;
+            max-width: 340px;
+        }
+
+        .search-wrap svg {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            color: var(--ink-muted);
+            pointer-events: none;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 0.55rem 0.85rem 0.55rem 2.25rem;
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            color: var(--ink-primary);
+            background: var(--bg-input);
+            border: 1px solid var(--border-strong);
+            border-radius: var(--radius-sm);
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        #searchInput:focus {
+            border-color: var(--cat-algebra);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+        }
+
+        #themeToggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.55rem 0.85rem;
+            font-family: var(--font-sans);
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--ink-primary);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-strong);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+
+        #themeToggle:hover {
+            background: var(--bg-math);
+        }
+
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            padding: 0.65rem 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .category-tabs {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .category-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .cat-tab {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.45rem 0.9rem;
+            font-family: var(--font-sans);
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--ink-secondary);
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 999px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+
+        .cat-tab:hover {
+            background: var(--bg-math);
+            color: var(--ink-primary);
+        }
+
+        .cat-tab.active {
+            background: var(--ink-primary);
+            color: var(--bg-surface);
+        }
+
+        .cat-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .dot-algebra { background: var(--cat-algebra); }
+        .dot-geometry { background: var(--cat-geometry); }
+        .dot-trig { background: var(--cat-trig); }
+        .dot-calculus { background: var(--cat-calculus); }
+
+        .results-counter {
+            font-size: 0.8rem;
+            color: var(--ink-muted);
+            font-weight: 500;
+        }
+
+        /* ==========================================================================
+           4. Main Grid & Formula Cards
+           ========================================================================== */
+        main {
+            padding: 2rem 0 4.5rem;
+        }
+
+        .intro-banner {
+            margin-bottom: 1.75rem;
+            padding: 1.25rem 1.5rem;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            box-shadow: var(--shadow-xs);
+        }
+
+        .intro-banner h2 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: -0.015em;
+        }
+
+        .intro-banner p {
+            font-size: 0.88rem;
+            color: var(--ink-secondary);
+            max-width: 780px;
+        }
+
+        .formula-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            grid-auto-rows: 1fr;
+            gap: 1.5rem;
+            align-items: stretch;
+        }
+
+        .formula-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .formula-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .formula-card.hidden {
+            display: none;
+        }
+
+        .formula-card[data-category="algebra"] { border-top: 4px solid var(--cat-algebra); }
+        .formula-card[data-category="geometry"] { border-top: 4px solid var(--cat-geometry); }
+        .formula-card[data-category="trigonometry"] { border-top: 4px solid var(--cat-trig); }
+        .formula-card[data-category="calculus"] { border-top: 4px solid var(--cat-calculus); }
+
+        .card-body {
+            padding: 1.4rem;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            gap: 1rem;
+        }
+
+        .card-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .card-copy-group {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .cat-badge {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 0.25rem 0.65rem;
+            border-radius: 999px;
+        }
+
+        .badge-algebra { background: var(--cat-algebra-bg); color: var(--cat-algebra); border: 1px solid var(--cat-algebra-border); }
+        .badge-geometry { background: var(--cat-geometry-bg); color: var(--cat-geometry); border: 1px solid var(--cat-geometry-border); }
+        .badge-trigonometry { background: var(--cat-trig-bg); color: var(--cat-trig); border: 1px solid var(--cat-trig-border); }
+        .badge-calculus { background: var(--cat-calculus-bg); color: var(--cat-calculus); border: 1px solid var(--cat-calculus-border); }
+
+        .copy-formula-btn,
+        .copy-card-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-family: var(--font-sans);
+            font-size: 0.74rem;
+            font-weight: 600;
+            color: var(--ink-muted);
+            background: transparent;
+            border: 1px solid var(--border-color);
+            padding: 0.28rem 0.58rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.18s;
+        }
+
+        .copy-formula-btn:hover,
+        .copy-card-btn:hover {
+            color: var(--ink-primary);
+            background: var(--bg-math);
+            border-color: var(--border-strong);
+        }
+
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: -0.015em;
+            color: var(--ink-primary);
+        }
+
+        .formula-display {
+            background: var(--bg-math);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 0.85rem 1.1rem;
+            font-family: var(--font-math);
+            font-size: 1.32rem;
+            min-height: 82px;
+            height: 82px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--ink-primary);
+            overflow-x: auto;
+            overflow-y: hidden;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .card-explanation {
+            font-size: 0.875rem;
+            color: var(--ink-secondary);
+            line-height: 1.55;
+            flex: 1;
+        }
+
+        .var-legend {
+            display: flex;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            gap: 0.4rem 0.85rem;
+            font-size: 0.8rem;
+            color: var(--ink-muted);
+            padding-top: 0.35rem;
+            border-top: 1px dashed var(--border-color);
+            min-height: 50px;
+        }
+
+        /* ==========================================================================
+           5. Card Mode Switcher: Worked Example vs. Live Solver (Formula Lab)
+           ========================================================================== */
+        .mode-tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: var(--bg-math);
+            padding: 0.25rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .mode-btn {
+            padding: 0.45rem 0.6rem;
+            font-family: var(--font-sans);
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--ink-secondary);
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.18s;
+        }
+
+        .mode-btn.active {
+            background: var(--bg-surface);
+            color: var(--ink-primary);
+            box-shadow: var(--shadow-xs);
+        }
+
+        .panel-content {
+            display: none;
+            animation: fadeIn 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .panel-content.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(3px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .worked-box {
+            background: var(--bg-step);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .worked-problem {
+            font-weight: 600;
+            color: var(--ink-primary);
+            margin-bottom: 0.65rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .step-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+        }
+
+        .step-list li {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+            color: var(--ink-secondary);
+        }
+
+        .step-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--ink-muted);
+        }
+
+        .step-math {
+            font-family: var(--font-math);
+            font-size: 1.02rem;
+            color: var(--ink-primary);
+        }
+
+        .worked-answer {
+            margin-top: 0.75rem;
+            min-height: 3.35rem;
+            padding: 0.55rem 0.75rem;
+            border-radius: 6px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-strong);
+            font-family: var(--font-math);
+            font-size: 1.02rem;
+            line-height: 1.3;
+            font-weight: 700;
+            color: var(--ink-primary);
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .solver-box {
+            background: var(--bg-step);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            min-height: 295px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .solver-inputs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 0.65rem;
+            margin-bottom: 0.85rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--ink-secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 0.48rem 0.65rem;
+            font-family: var(--font-math);
+            font-size: 0.98rem;
+            color: var(--ink-primary);
+            background: var(--bg-input);
+            border: 1px solid var(--border-strong);
+            border-radius: 6px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--cat-algebra);
+        }
+
+        .solver-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .btn-solve {
+            flex: 1;
+            padding: 0.55rem 0.85rem;
+            font-family: var(--font-sans);
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #ffffff;
+            background: var(--ink-primary);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        html.dark .btn-solve {
+            color: #0f172a;
+            background: #f8fafc;
+        }
+
+        .btn-solve:hover {
+            opacity: 0.9;
+        }
+
+        .btn-sample {
+            padding: 0.55rem 0.75rem;
+            font-family: var(--font-sans);
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--ink-secondary);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-strong);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-sample:hover {
+            background: var(--bg-math);
+            color: var(--ink-primary);
+        }
+
+        .solver-output {
+            margin-top: 0.9rem;
+            padding-top: 0.85rem;
+            border-top: 1px solid var(--border-color);
+            display: none;
+        }
+
+        .solver-output.visible {
+            display: block;
+            animation: fadeIn 0.25s ease;
+        }
+
+        .solver-error {
+            padding: 0.65rem 0.8rem;
+            border-radius: 6px;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+            font-size: 0.82rem;
+            font-weight: 500;
+        }
+
+        html.dark .solver-error {
+            background: rgba(220, 38, 38, 0.15);
+            border-color: rgba(248, 113, 113, 0.35);
+            color: #fca5a5;
+        }
+
+        .output-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.55rem;
+        }
+
+        .output-header span {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--ink-muted);
+        }
+
+        .copy-solution-btn {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--ink-secondary);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .copy-solution-btn:hover {
+            color: var(--ink-primary);
+            border-color: var(--border-strong);
+        }
+
+        .final-highlight {
+            margin-top: 0.7rem;
+            min-height: 3.35rem;
+            padding: 0.65rem 0.85rem;
+            border-radius: 8px;
+            font-family: var(--font-math);
+            font-size: 1.02rem;
+            line-height: 1.3;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .formula-card[data-category="algebra"] .final-highlight {
+            background: var(--cat-algebra-bg);
+            color: var(--cat-algebra);
+            border: 1px solid var(--cat-algebra-border);
+        }
+
+        .formula-card[data-category="geometry"] .final-highlight {
+            background: var(--cat-geometry-bg);
+            color: var(--cat-geometry);
+            border: 1px solid var(--cat-geometry-border);
+        }
+
+        .formula-card[data-category="trigonometry"] .final-highlight {
+            background: var(--cat-trig-bg);
+            color: var(--cat-trig);
+            border: 1px solid var(--cat-trig-border);
+        }
+
+        .formula-card[data-category="calculus"] .final-highlight {
+            background: var(--cat-calculus-bg);
+            color: var(--cat-calculus);
+            border: 1px solid var(--cat-calculus-border);
+        }
+
+        .empty-state {
+            display: none;
+            text-align: center;
+            padding: 3.5rem 1.5rem;
+            background: var(--bg-surface);
+            border: 1px dashed var(--border-strong);
+            border-radius: var(--radius-lg);
+        }
+
+        .empty-state.visible {
+            display: block;
+        }
+
+        #toast {
+            position: fixed;
+            bottom: 1.25rem;
+            right: 1.25rem;
+            z-index: 60;
+            background: var(--ink-primary);
+            color: var(--bg-surface);
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            box-shadow: var(--shadow-md);
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: none;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+
+        #toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 640px) {
+            .formula-grid {
+                grid-template-columns: 1fr;
+            }
+            .header-controls {
+                width: 100%;
+                max-width: none;
+            }
+            .search-wrap {
+                max-width: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="container">
+            <div class="header-top">
+                <div class="brand">
+                    <div class="brand-mark" aria-hidden="true">&Sigma;</div>
+                    <div>
+                        <h1>Math Reference</h1>
+                        <p>Interactive Formula Compendium &amp; Formula Lab</p>
+                    </div>
+                </div>
+
+                <div class="header-controls">
+                    <div class="search-wrap">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="M21 21l-4.35-4.35"></path>
+                        </svg>
+                        <input id="searchInput" type="search" placeholder="Search formulas, variables, keywords..." aria-label="Search formulas">
+                    </div>
+                    <button id="themeToggle" type="button" aria-label="Toggle dark or light mode">
+                        <span id="themeIcon">&#9790;</span>
+                        <span id="themeLabel">Dark Mode</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="filter-bar">
+                <nav class="category-tabs" aria-label="Formula Categories">
+                    <button type="button" class="cat-tab active" data-filter="all">All Formulas (12)</button>
+                    <button type="button" class="cat-tab" data-filter="algebra"><span class="cat-dot dot-algebra"></span>Algebra</button>
+                    <button type="button" class="cat-tab" data-filter="geometry"><span class="cat-dot dot-geometry"></span>Geometry</button>
+                    <button type="button" class="cat-tab" data-filter="trigonometry"><span class="cat-dot dot-trig"></span>Trigonometry</button>
+                    <button type="button" class="cat-tab" data-filter="calculus"><span class="cat-dot dot-calculus"></span>Calculus</button>
+                </nav>
+                <span id="resultsCounter" class="results-counter">Showing 12 of 12 formulas</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="intro-banner">
+            <div>
+                <h2>Study Reference &amp; Formula Lab Workbench</h2>
+                <p>Inspect each theorem&rsquo;s formal notation, copy any formula or complete card, study the worked example, or switch to the <strong>Live Solver (Formula Lab)</strong> tab to substitute your own values and verify intermediate steps.</p>
+            </div>
+        </div>
+
+        <section id="formulaGrid" class="formula-grid">
+
+            <!-- 1. Quadratic Formula -->
+            <article class="formula-card" data-category="algebra" data-keywords="quadratic formula roots discriminant polynomial algebra x a b c">
+                <div class="card-body">
+                    <div class="card-top-row">
+                        <span class="cat-badge badge-algebra">Algebra</span>
+                        <div class="card-copy-group">
+                            <button type="button" class="copy-formula-btn" data-copy="x = (−b ± √(b² − 4ac)) / (2a)">Copy Formula</button>
+                            <button type="button" class="copy-card-btn">Copy All</button>
+                        </div>
+                    </div>
+                    <h3 class="card-title">1. Quadratic Formula</h3>
+
+                    <div class="formula-display">
+                        <i>x</i> = 
+                        <span class="frac">
+                            <span>&minus;<i>b</i> &plusmn; <span class="sqrt">&radic;<span class="sqrt-body"><i>b</i><sup>2</sup> &minus; 4<i>ac</i></span></span></span>
+                            <span>2<i>a</i></span>
+                        </span>
+                    </div>
+
+                    <p class="card-explanation">Finds the exact roots (solutions) of any standard quadratic equation <var>ax</var><sup>2</sup> + <var>bx</var> + <var>c</var> = 0 where <var>a</var> &ne; 0.</p>
+
+                    <div class="var-legend">
+                        <span><var>a</var>: quadratic coeff.</span>
+                        <span><var>b</var>: linear coeff.</span>
+                        <span><var>c</var>: constant term</span>
+                    </div>
+
+                    <div class="mode-tabs">
+                        <button type="button" class="mode-btn active" data-target="worked">Worked Example</button>
+                        <button type="button" class="mode-btn" data-target="solver">Live Solver (Lab)</button>
+                    </div>
+
+                    <div class="panel-content worked-panel active">
+                        <div class="worked-box">
+                            <div class="worked-problem">Solve: 2<var>x</var><sup>2</sup> &minus; 5<var>x</var> &minus; 3 = 0</div>
+                            <ol class="step-list">
+                                <li>
+                                    <span class="step-label">Step 1: Identify Coefficients</span>
+                                    <span class="step-math"><i>a</i> = 2, &nbsp; <i>b</i> = &minus;5, &nbsp; <i>c</i> = &minus;3</span>
+                                </li>
+                                <li>
+                                    <span class="step-label">Step 2: Compute Discriminant (&Delta; = b&sup2; &minus; 4ac)</span>
+                                    <span class="step-math">&Delta; = (&minus;5)<sup>2</sup> &minus; 4(2)(&minus;3) = 25 + 24 = 49</span>
+                                </li>
+                                <li>
+                                    <span class="step-label">Step 3: Substitute into Formula</span>
+                                    <span class="step-math"><i>x</i> = (5 &plusmn; &radic;49) / 4 = (5 &plusmn; 7) / 4</span>
+                                </li>
+                            </ol>
+                            <div class="worked-answer">Roots: <i>x</i><sub>1</sub> = 3, &nbsp; <i>x</i><sub>2</sub> = &minus;0.5</div>
+                        </div>
+                    </div>
+
+                    <div class="panel-content solver-panel">
+                        <div class="solver-box" data-solver="quadratic">
+                            <div class="solver-inputs">
+                                <div class="input-group">
+                                    <label>Coeff. <var>a</var> (&ne; 0)</label>
+                                    <input type="number" step="any" data-var="a" value="2">
+                                </div>
+                                <div class="input-group">
+                                    <label>Coeff. <var>b</var></label>
+                                    <input type="number" step="any" data-var="b" value="-5">
+                                </div>
+                                <div class="input-group">
+                                    <label>Constant <var>c</var></label>
+                                    <input type="number" step="any" data-var="c" value="-3">
+                                </div>
+                            </div>
+                            <div class="solver-actions">
+                                <button type="button" class="btn-solve">Solve Step-by-Step</button>
+                                <button type="button" class="btn-sample" data-sample='{"a":1,"b":4,"c":5}'>Load Example</button>
+                            </div>
+                            <div class="solver-output"></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 2. Two-Point Slope & Line Equation -->
+            <article class="formula-card" data-category="algebra" data-keywords="slope intercept linear equation two points line m b x1 y1 x2 y2 algebra">
+                <div class="card-body">
+                    <div class="card-top-row">
+                        <span class="cat-badge badge-algebra">Algebra</span>
+                        <div class="card-copy-group">
+                            <button type="button" class="copy-formula-btn" data-copy="m = (y₂ − y₁) / (x₂ − x₁) • y = mx + b">Copy Formula</button>
+                            <button type="button" class="copy-card-btn">Copy All</button>
+                        </div>
+                    </div>
+                    <h3 class="card-title">2. Two-Point Slope &amp; Line Equation</h3>
+
+                    <div class="formula-display">
+                        <i>m</i> = 
+                        <span class="frac">
+                            <span><i>y</i><sub>2</sub> &minus; <i>y</i><sub>1</sub></span>
+                            <span><i>x</i><sub>2</sub> &minus; <i>x</i><sub>1</sub></span>
+                        </span>
+                        &nbsp;&bull;&nbsp; <i>y</i> = <i>mx</i> + <i>b</i>
+                    </div>
+
+                    <p class="card-explanation">Determines the constant rate of change (slope <var>m</var>) between two Cartesian points and constructs the slope-intercept line equation.</p>
+
+                    <div class="var-legend">
+                        <span>(<var>x</var><sub>1</sub>, <var>y</var><sub>1</sub>), (<var>x</var><sub>2</sub>, <var>y</var><sub>2</sub>): points</span>
+                        <span><var>m</var>: slope</span>
+                        <span><var>b</var>: y-intercept</span>
+                    </div>
+
+                    <div class="mode-tabs">
+                        <button type="button" class="mode-btn active" data-target="worked">Worked Example</button>
+                        <button type="button" class="mode-btn" data-target="solver">Live Solver (Lab)</button>
+                    </div>
+
+                    <div class="panel-content worked-panel active">
+                        <div class="worked-box">
+                            <div class="worked-problem">Find the line passing through (2, 3) and (6, 11).</div>
+                            <ol class="step-list">
+                                <li>
+                                    <span class="step-label">Step 1: Compute Slope (m)</span>
+                                    <span class="step-math"><i>m</i> = (11 &minus; 3) / (6 &minus; 2) = 8 / 4 = 2</span>
+                                </li>
+                                <li>
+                                    <span class="step-label">Step 2: Solve for y-Intercept (b = y₁ &minus; mx₁)</span>
+                                    <span class="step-math"><i>b</i> = 3 &minus; 2(2) = 3 &minus; 4 = &minus;1</span>
+                                </li>
+                            </ol>
+                            <div class="worked-answer">Equation: <i>y</i> = 2<i>x</i> &minus; 1 &nbsp;(<i>m</i> = 2, <i>b</i> = &minus;1)</div>
+                        </div>
+                    </div>
+
+                    <div class="panel-content solver-panel">
+                        <div class="solver-box" data-solver="slope">
+                            <div class="solver-inputs">
+                                <div class="input-group">
+                                    <label><var>x</var><sub>1</sub></label>
+                                    <input type="number" step="any" data-var="x1" value="2">
+                                </div>
+                                <div class="input-group">
+                                    <label><var>y</var><sub>1</sub></label>
+                                    <input type="number" step="any" data-var="y1" value="3">
+                                </div>
+                                <div class="input-group">
+                                    <label><var>x</var><sub>2</sub></label>
+                                    <input type="number" step="any" data-var="x2" value="6">
+                                </div>
+                                <div class="input-group">
+                                    <label><var>y</var><sub>2</sub></label>
+                                    <input type="number" step="any" data-var="y2" value="11">
+                                </div>
+                            </div>
+                            <div class="solver-actions">
+                                <button type="button" class="btn-solve">Solve Step-by-Step</button>
+                                <button type="button" class="btn-sample" data-sample='{"x1":-3,"y1":8,"x2":5,"y2":4}'>Load Example</button>
+                            </div>
+                            <div class="solver-output"></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 3. Compound Interest Formula -->
+            <article class="formula-card" data-category="algebra" data-keywords="compound interest exponential growth finance principal rate time A P r n t algebra">
+                <div class="card-body">
+                    <div class="card-top-row">
+                        <span class="cat-badge badge-algebra">Algebra</span>
+                        <div class="card-copy-group">
+                            <button type="button" class="copy-formula-btn" data-copy="A = P(1 + r/n)^(nt)">Copy Formula</button>
+                            <button type="button" class="copy-card-btn">Copy All</button>
+                        </div>
+                    </div>
+                    <h3 class="card-title">3. Compound Interest Formula</h3>
+
+                    <div class="formula-display">
+                        <i>A</i> = <i>P</i><span style="font-size:1.15em;">(</span>1 + 
+                        <span class="frac">
+                            <span><i>r</i></span>
+                            <span><i>n</i></span>
+                        </span>
+                        <span style="font-size:1.15em;">)</span><sup><i>nt</i></sup>
+                    </div>
+
+                    <p class="card-explanation">Calculates the accumulated future value <var>A</var> of an initial principal <var>P</var> when interest compounds <var>n</var> times per year over <var>t</var> years.</p>
+
+                    <div class="var-legend">
+                        <span><var>P</var>: principal</span>
+                        <span><var>r</var>: annual rate (%)</span>
+                        <span><var>n</var>: compounds/yr</span>
+                        <span><var>t</var>: years</span>
+                    </div>
+
+                    <div class="mode-tabs">
+                        <button type="button" class="mode-btn active" data-target="worked">Worked Example</button>
+                        <button type="button" class="mode-btn" data-target="solver">Live Solver (Lab)</button>
+                    </div>
+
+                    <div class="panel-content worked-panel active">
+                        <div class="worked-box">
+                            <div class="worked-problem">Invest <var>P</var> = 10,000 at 6% annual interest compounded monthly (<var>n</var> = 12) for 5 years.</div>
+                            <ol class="step-list">
+                                <li>
+                                    <span class="step-label">Step 1: Convert Rate &amp; Periodic Factor</span>
+                                    <span class="step-math"><i>r</i> = 0.06, &nbsp; 1 + <i>r</i>/<i>n</i> = 1 + 0.06/12 = 1.005</span>
+                                </li>
+                                <li>
+                                    <span class="step-label">Step 2: Total Compounding Periods (nt)</span>
+                                    <span class="step-math"><i>nt</i> = 12 &times; 5 = 60 periods</span>
+                                </li>
+                                <li>
+                                    <span class="step-label">Step 3: Evaluate Power &amp; Multiply</span>
+                                    <span class="step-math"><i>A</i> = 10,000 &times; (1.005)<sup>60</sup> &approx; 10,000 &times; 1.34885</span>
+                                </li>
+                            </ol>
+                            <div class="worked-answer">Final Amount: <i>A</i> = 13,488.50 &nbsp;(Interest: 3,488.50)</div>
+                        </div>
+                    </div>
+
+                    <div class="panel-content solver-panel">
+                        <div class="solver-box" data-solver="compound">
+                            <div class="solver-inputs">
+                                <div class="input-group">
+                                    <label>Principal <var>P</var></label>
+                                    <input type="number" step="any" data-var="P" value="10000">
+                                </div>
+                                <div class="input-group">
+                                    <label>Annual Rate <var>r</var> (%)</label>
+                                    <input type="number" step="any" data-var="r" value="6">
+                                </div>
+                                <div class="input-group">
+                                    <label>Compounds/Yr <var>n</var></label>
+                                    <input type="number" step="1" min="1" data-var="n" value="12">
+                                </div>
+                                <div class="input-group">
+                                    <label>Years <var>t</var></label>
+                                    <input type="number" step="any" data-var="t" value="5">
+                                </div>
+                            </div>
+                            <div class="solver-actions">
+                                <button type="button" class="btn-solve">Solve Step-by-Step</button>
+                                <button type="button" class="btn-sample" data-sample='{"P":25000,"r":7.5,"n":4,"t":10}'>Load Example</button>
+                            </div>
+                            <div class="solver-output"></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 4. Pythagorean Theorem -->
+            <article class="formula-card" data-category="geometry" data-keywords="pythagorean theorem right triangle hypotenuse legs a b c geometry">
+                <div class="card-body">
+                    <div class="card-top-row">
+                        <span class="cat-badge badge-geometry">Geometry</span>
+                        <div class="card-copy-group">
+                            <button type="button" class="copy-formula-btn" data-copy="a² + b² = c² ⇒ c = √(a² + b²)">Copy Formula</button>
+                            <button type="button" class="copy-card-btn">Copy All</button>
+                        </div>
+                    </div>
+                    <h3 class="card-title">4. Pythagorean Theorem</h3>
+
+                    <div class="formula-display">
+                        <i>a</i><sup>2</sup> + <i>b</i><sup>2</sup> = <i>c</i><sup>2</sup> &nbsp;&rArr;&nbsp; <i>c</i> = <span class="sqrt">&radic;<span class="sqrt-body"><i>a</i><sup>2</sup> + <i>b</i><sup>2</sup></span></span>
+                    </div>
+
+                    <p class="card-explanation">Relates the two perpendicular legs (<var>a</var>, <var>b</var>) of a right-angled triangle to the length of its longest side, the hypotenuse (<var>c</var>).</p>
+
+                    <div class="var-legend">
+                        <span><var>a</var>, <var>b</var>: perpendicular legs</span>
+                        <span><var>c</var>: hypotenuse</span>
+                    </div>
+
+                    <div class="mode-tabs">
+                        <button type="button" class="mode-btn active" data-target="worked">Worked Example</button>
+                        <button type="button" class="mode-btn" data-target="solver">Live Solver (Lab)</button>
+                    </div>
+
+                    <div class="panel-content worked-panel active">
+                        <div class="worked-box">
+                            <div class="worked-problem">Find hypotenuse <var>c</var> for a right triangle with legs <var>a</var> = 5 and <var>b</var> = 12.</div>
+                            <ol class="step-list">
+                                <li>
+                                    <span class="step-label">Step 1: Square Both Legs</span>
+                                    <span class="step-math"><i>a</i><sup>2</sup> + <i>b</i><sup>2</sup> = 5<sup>2</sup> + 12<sup>2</sup> = 25 + 144 = 169</span>
+                                </li>
+                                <li>
+                                    <span class="step-label">Step 2: Take the Principal Square Root</span>
+                                    <span class="step-math"><i>c</i> = &radic;169 = 13</span>
+                                </li>
+                            </ol>
+                            <div class="worked-answer">Hypotenuse: <i>c</i> = 13 units</div>
+                        </div>
+                    </div>
+
+                    <div class="panel-content solver-panel">
+                        <div class="solver-box" data-solver="pythagorean">
+                            <div class="solver-inputs">
+                                <div class="input-group">
+                                    <label>Leg <var>a</var> (&gt; 0)</label>
+                                    <input type="number" step="any" data-var="a" value="5">
+                                </div>
+                                <div class="input-group">
+                                    <label>Leg <var>b</var> (&gt; 0)</label>
+                                    <input type="number" step="any" data-var="b" value="12">
+                                </div>
+                            </div>
+                            <div class="solver-actions">
+                                <button type="button" class="btn-solve">Solve Step-by-Step</button>
+                                <button type="button" class="btn-sample" data-sample='{"a":8,"b":15}'>Load Example</button>
+                            </div>
+                            <div class="solver-output"></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 5. Circle Area & Circumference -->
+            <article class="formula-card" data-category="geometry" data-keywords="circle area circumference radius diameter pi r A C geometry">
+                <div class="card-body">
+                    <div class="card-top-row">
+                        <span class="cat-badge badge-geometry">Geometry</span>
+                        <div class="card-copy-group">
+                            <button type="button" class="copy-formula-btn" data-copy="A = πr² • C = 2πr">Copy Formula</button>
+                            <button type="button" class="copy-card-btn">Copy All</button>
+                        </div>
+                    </div>
+                    <h3 class="card-title">5. Circle Area &amp; Circumference</h3>
+
+                    <div class="formula-display">
+                        <i>A</i> = &pi;<i>r</i><sup>2</sup> &nbsp;&bull;&nbsp; <i>C</i> = 2&pi;<i>r</i>
+                    </div>
+
+                    <p class="card-explanation">Computes the enclosed interior area <var>A</var> and outer boundary perimeter (circumference <var>C</var>) of a circle from its radius <var>r</var>.</p>
+
+                    <div class="var-legend">
+                        <span><var>r</var>: radius</span>
+                        <span>&pi; &approx; 3.141593</span>
+                    </div>
+
+                    <div class="mode-tabs">
+                        <button type="button" class="mode-btn active" data-target="worked">Worked Example</button>
+                        <button type="button" class="mode-btn" data-target="solver">Live Solver (Lab)</button>
+                    </div>
+
+                    <div class="panel-content worked-panel active">
+                        <div class="worked-box">
+                            <div class="worked-problem">Calculate area and circumference for a circle of radius <var>r</var> = 7 cm.</div>
+                            <ol class="step-list">
+                                <li>
+                                    <span class="step-label">Step 1: Compute Area (A = &pi;r&sup2;)</span>
+                                    <span class="step-math"><i>A</i> = &pi;(7)<sup>2</sup> = 49&pi; &approx; 153.9380 cm<sup>2</sup></span>
+                                </li>
+                                <li>
+                                    <span class="step-label">Step 2: Compute Circumference (C = 2&pi;r)</span>
+                                    <span class="step-math"><i>C</i> = 2&pi;(7) = 14&pi; &approx; 43.9823 cm</span>
+                                </li>
+                            </ol>
+                            <div class="worked-answer"><i>A</i> &approx; 153.94 cm<sup>2</sup>, &nbsp; <i>C</i> &approx; 43.98 cm</div>
+                        </div>
+                    </div>
+
+                    <div class="panel-content solver-panel">
+                        <div class="solver-box" data-solver="circle">
+                            <div class="solver-inputs">
+                                <div class="input-group">
+                                    <label>Radius <var>r</var> (&gt; 0)</label>
+                                    <input type="number" step="any" data-var="r" value="7">
+                                </div>
+                            </div>
+                            <div class="solver-actions">
+                                <button type="button" class="btn-solve">Solve Step-by-Step</button>
+                                <button type="button" class="btn-sample" data-sample='{"r":4.5}'>Load Example</button>
+                            </div>
+                            <div class="solver-output"></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 6. Cylinder Volume & Surface Area -->
+            <article class="formula-card" data-category="geometry" data-keywords="cylinder volume surface area 3d solid radius height pi r h V SA geometry">
+                <div class="card-body">
+                    <div class="card-top-row">
+                        <span class="cat-badge badge-geometry">Geometry</span>
+                        <div class="card-copy-group">
+                            <button type="button" class="copy-formula-btn" data-copy="V = πr²h • SA = 2πrh + 2πr²">Copy Formula</button>
+                            <button type="button" class="copy-card-btn">Copy All</button>
+                        </div>
+                    </div>
+                    <h3 class="card-title">6. Cylinder Volume &amp; Surface Area</h3>
+
+                    <div class="formula-display">
+                        <i>V</i> = &pi;<i>r</i><sup>2</sup><i>h</i> &nbsp;&bull;&nbsp; <i>SA</i> = 2&pi;<i>rh</i> + 2&pi;<i>r</i><sup>2</sup>
+                    </div>
+
+                    <p class="card-explanation">Measures the 3D interior capacity (<var>V</var>) and total exterior surface area (<var>SA</var>, lateral wall plus two circular caps) of a right cylinder.</p>
+
+                    <div class="var-legend">
+                        <span><var>r</var>: base radius</span>
+                        <span><var>h</var>: vertical height</span>
+                    </div>
+
+                    <div class="mode-tabs">
+                        <button type="button" class="mode-btn active" data-target="worked">Worked Example</button>
+                        <button type="button" class="mode-btn" data-target="solver">Live Solver (Lab)</button>
+                    </div>
+
+                    <div class="panel-content worked-panel active">
+                        <div class="worked-box">
+                            <div class="worked-problem">Find volume and surface area for <var>r</var> = 3 m and <var>h</var> = 10 m.</div>
+                            <ol class="step-list">
+                                <li>
+                                    <span class="step-label">Step 1: Compute Volume (V = &pi;r&sup2;h)</span>
+                                    <span class="step-math"><i>V</i> = &pi;(3<sup>2</sup>)(10) = 90&pi; &approx; 282.7433 m<sup>3</sup></span>
+                                </li>
+                                <li>
+                                    <span class="step-label">Step 2: Lateral + Base Areas (SA)</span>
+                                    <span class="step-math"><i>SA</i> = 2&pi;(3)(10) + 2&pi;(3<sup>2</sup>) = 60&pi; + 18&pi; = 78&pi; &approx; 245.0442 m<sup>2</sup></span>
+                                </li>
+                            </ol>
+                            <div class="worked-answer"><i>V</i> &approx; 282.74 m<sup>3</sup>, &nbsp; <i>SA</i> &approx; 245.04 m<sup>2</sup></div>
+                        </div>
+                    </div>
+
+                    <div class="panel-content solver-panel">
+                        <div class="solver-box" data-solver="cylinder">
+                            <div class="solver-inputs">
+                                <div class="input-group">
+                                    <label>Radius <var>r</var> (&gt; 0)</label>
+                                    <input type="number" step="any" data-var="r" value="3">
+                                </div>
+                                <div class="input-group">
+                                    <label>Height <var>h</var> (&gt; 0)</label>
+                                    <input type="number" step="any" data-var="h" value="10">
+                                </div>
+                            </div>
+                            <div class="solver-actions">
+                                <button type="button" class="btn-solve">Solve Step-by-Step</button>
+                                <button type="button" class="btn-sample" data-sample='{"r":5,"h":8}'>Load Example</button>
+                            </div>
+                            <div class="solver-output"></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 7. Law of Cosines -->
+            <article class="formula-card" data-category="trigonometry" data-keywords="law of cosines triangle side angle sas oblique a b c C trigonometry">
+                <div class="card-body">
+                    <div class="card-top-row">
+                        <span class="cat-badge badge-trigonometry">Trigonometry</span>
+                        <div class="card-copy-group">
+                            <button type="button" class="copy-formula-btn" data-copy="c² = a² + b² − 2ab·cos(C)">Copy Formula</button>
+                            <button type="button" class="copy-card-btn">Copy All</button>
+                        </div>
+                    </div>
+                    <h3 class="card-title">7. Law of Cosines</h3>
+
+                    <div class="formula-display">
+                        <i>c</i><sup>2</sup> = <i>a</i><sup>2</sup> + <i>b</i><sup>2</sup> &minus; 2<i>ab</i>&thinsp;cos(<i>C</i>)
+                    </div>
+
+                    <p class="card-explanation">Generalizes the Pythagorean theorem to any triangle, solving for the third side <var>c</var> given two sides (<var>a</var>, <var>b</var>) and their included angle <var>C</var>.</p>
+
+                    <div class="var-legend">
+                        <span><var>a</var>, <var>b</var>: known sides</span>
+                        <span><var>C</var>: included angle (deg)</span>
+                    </div>
+
+                    <div class="mode-tabs">
+                        <button type="button" class="mode-btn active" data-target="worked">Worked Example</button>
+                        <button type="button" class="mode-btn" data-target="solver">Live Solver (Lab)</button>
+                    </div>
+
+                    <div class="panel-content worked-panel active">
+                        <div class="worked-box">
+                            <div class="worked-problem">Given <var>a</var> = 8, <var>b</var> = 11, and included angle <var>C</var> = 60&deg;, find side <var>c</var>.</div>
+                            <ol class="step-list">
+                                <li>
+                                    <span class="step-label">Step 1: Evaluate cos(60&deg;)</span>
+                                    <span class="step-math">cos(60&deg;) = 0.5</span>
+                                </li>
+                                <li>
+                                    <span class="step-label">Step 2: Substitute into c&sup2;</span>
+                                    <span class="step-math"><i>c</i><sup>2</sup> = 8<sup>2</sup> + 11<sup>2</sup> &minus; 2(8)(11)(0.5) = 64 + 121 &minus; 88 = 97</span>
+                                </li>
+                                <li>
+                                    <span class="step-label">Step 3: Take Square Root</span>
+                                    <span class="step-math"><i>c</i> = &radic;97 &approx; 9.8489</span>
+                                </li>
+                            </ol>
+                            <div class="worked-answer">Side Length: <i>c</i> &approx; 9.8489 units</div>
+                        </div>
+                    </div>
+
+                    <div class="panel-content solver-panel">
+                        <div class="solver-box" data-solver="cosines">
+                            <div class="solver-inputs">
+                                <div class="input-group">
+                                    <label>Side <var>a</var> (&gt; 0)</label>
+                                    <input type="number" step="any" data-var="a" value="8">
+                                </div>
+                                <div class="input-group">
+                                    <label>Side <var>b</var> (&gt; 0)</label>
+                                    <input type="number" step="any" data-var="b" value="11">
+                                </div>
+                                <div class="input-group">
+                                    <label>Angle <var>C</var> (0&deg;&ndash;180&deg;)</label>
+                                    <input type="number" step="any" data-var="C" value="60">
+                                </div>
+                            </div>
+                            <div class="solver-actions">
+                                <button type="button" class="btn-solve">Solve Step-by-Step</button>
+                                <button type="button" class="btn-sample" data-sample='{"a":10,"b":14,"C":120}'>Load Example</button>
+                            </div>
+                            <div class="solver-output"></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 8. Right Triangle SOH-CAH-TOA -->
+            <article class="formula-card" data-category="trigonometry" data-keywords="soh cah toa sine cosine tangent right triangle opposite adjacent hypotenuse theta trigonometry">
+                <div class="card-body">
+                    <div class="card-top-row">
+                        <span class="cat-badge badge-trigonometry">Trigonometry</span>
+                        <div class="card-copy-group">
+                            <button type="button" class="copy-formula-btn" data-copy="sin(θ) = Opp/Hyp • cos(θ) = Adj/Hyp • tan(θ) = Opp/Adj">Copy Formula</button>
+                            <button type="button" class="copy-card-btn">Copy All</button>
+                        </div>
+                    </div>
+                    <h3 class="card-title">8. Right Triangle SOH-CAH-TOA</h3>
+
+                    <div class="formula-display" style="font-size: 1.15rem;">
+                        sin(&theta;) = <span class="frac"><span>Opp</span><span>Hyp</span></span> &nbsp;
+                        cos(&theta;) = <span class="frac"><span>Adj</span><span>Hyp</span></span> &nbsp;
+                        tan(&theta;) = <span class="frac"><span>Opp</span><span>Adj</span></span>
+                    </div>
+
+                    <p class="card-explanation">Defines primary trigonometric ratios of acute angle <var>&theta;</var> from the opposite and adjacent legs of a right triangle.</p>
+
+                    <div class="var-legend">
+                        <span>Opp: opposite leg</span>
+                        <span>Adj: adjacent leg</span>
+                        <span><var>&theta;</var> = arctan(Opp/Adj)</span>
+                    </div>
+
+                    <div class="mode-tabs">
+                        <button type="button" class="mode-btn active" data-target="worked">Worked Example</button>
+                        <button type="button" class="mode-btn" data-target="solver">Live Solver (Lab)</button>
+                    </div>
+
+                    <div class="panel-content worked-panel active">
+                        <div class="worked-box">
+                            <div class="worked-problem">Given Opposite = 3 and Adjacent = 4, find Hypotenuse, <var>&theta;</var>, and trig ratios.</div>
+                            <ol class="step-list">
+                                <li>
+                                    <span class="step-label">Step 1: Compute Hypotenuse</span>
+                                    <span class="step-math">Hyp = &radic;(3<sup>2</sup> + 4<sup>2</sup>) = &radic;25 = 5</span>
+                                </li>
+                                <li>
+                                    <span class="step-label">Step 2: Solve for Angle &theta;</span>
+                                    <span class="step-math">&theta; = arctan(3 / 4) &approx; 36.8699&deg; (0.6435 rad)</span>
+                                </li>
+                                <li>
+                                    <span class="step-label">Step 3: Evaluate Ratios</span>
+                                    <span class="step-math">sin(&theta;) = 0.6, &nbsp; cos(&theta;) = 0.8, &nbsp; tan(&theta;) = 0.75</span>
+                                </li>
+                            </ol>
+                            <div class="worked-answer">&theta; &approx; 36.87&deg; &bull; sin = 0.6000, cos = 0.8000, tan = 0.7500</div>
+                        </div>
+                    </div>
+
+                    <div class="panel-content solver-panel">
+                        <div class="solver-box" data-solver="sohcahtoa">
+                            <div class="solver-inputs">
+                                <div class="input-group">
+                                    <label>Opposite (&gt; 0)</label>
+                                    <input type="number" step="any" data-var="opp" value="3">
+                                </div>
+                                <div class="input-group">
+                                    <label>Adjacent (&gt; 0)</label>
+                                    <input type="number" step="any" data-var="adj" value="4">
+                                </div>
+                            </div>
+                            <div class="solver-actions">
+                                <button type="button" class="btn-solve">Solve Step-by-Step</button>
+                                <button type="button" class="btn-sample" data-sample='{"opp":7,"adj":24}'>Load Example</button>
+                            </div>
+                            <div class="solver-output"></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 9. Arc Length & Sector Area -->
+            <article class="formula-card" data-category="trigonometry" data-keywords="arc length sector area radians degrees circle central angle s r theta A trigonometry">
+                <div class="card-body">
+                    <div class="card-top-row">
+                        <span class="cat-badge badge-trigonometry">Trigonometry</span>
+                        <div class="card-copy-group">
+                            <button type="button" class="copy-formula-btn" data-copy="s = rθ • A = ½r²θ">Copy Formula</button>
+                            <button type="button" class="copy-card-btn">Copy All</button>
+                        </div>
+                    </div>
+                    <h3 class="card-title">9. Arc Length &amp; Sector Area</h3>
+
+                    <div class="formula-display">
+                        <i>s</i> = <i>r</i>&theta; &nbsp;&bull;&nbsp; <i>A</i> = <span class="frac"><span>1</span><span>2</span></span><i>r</i><sup>2</sup>&theta;
+                    </div>
+
+                    <p class="card-explanation">Computes curved arc length <var>s</var> and pie-slice sector area <var>A</var> subtended by central angle <var>&theta;</var> (converted from degrees to radians).</p>
+
+                    <div class="var-legend">
+                        <span><var>r</var>: radius</span>
+                        <span><var>&theta;</var><sub>rad</sub> = <var>&theta;</var><sub>deg</sub> &times; (&pi;/180)</span>
+                    </div>
+
+                    <div class="mode-tabs">
+                        <button type="button" class="mode-btn active" data-target="worked">Worked Example</button>
+                        <button type="button" class="mode-btn" data-target="solver">Live Solver (Lab)</button>
+                    </div>
+
+                    <div class="panel-content worked-panel active">
+                        <div class="worked-box">
+                            <div class="worked-problem">Find arc length and sector area for <var>r</var> = 6 cm and <var>&theta;</var> = 90&deg;.</div>
+                            <ol class="step-list">
+                                <li>
+                                    <span class="step-label">Step 1: Convert Degrees to Radians</span>
+                                    <span class="step-math">&theta;<sub>rad</sub> = 90&deg; &times; (&pi; / 180) = &pi;/2 &approx; 1.5708 rad</span>
+                                </li>
+                                <li>
+                                    <span class="step-label">Step 2: Compute Arc Length &amp; Sector Area</span>
+                                    <span class="step-math"><i>s</i> = 6(&pi;/2) &approx; 9.4248 cm, &nbsp; <i>A</i> = 0.5(36)(&pi;/2) &approx; 28.2743 cm<sup>2</sup></span>
+                                </li>
+                            </ol>
+                            <div class="worked-answer"><i>s</i> &approx; 9.4248 cm, &nbsp; <i>A</i> &approx; 28.2743 cm<sup>2</sup></div>
+                        </div>
+                    </div>
+
+                    <div class="panel-content solver-panel">
+                        <div class="solver-box" data-solver="sector">
+                            <div class="solver-inputs">
+                                <div class="input-group">
+                                    <label>Radius <var>r</var> (&gt; 0)</label>
+                                    <input type="number" step="any" data-var="r" value="6">
+                                </div>
+                                <div class="input-group">
+                                    <label>Angle <var>&theta;</var> (deg)</label>
+                                    <input type="number" step="any" data-var="deg" value="90">
+                                </div>
+                            </div>
+                            <div class="solver-actions">
+                                <button type="button" class="btn-solve">Solve Step-by-Step</button>
+                                <button type="button" class="btn-sample" data-sample='{"r":12,"deg":45}'>Load Example</button>
+                            </div>
+                            <div class="solver-output"></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 10. Power Rule Derivative -->
+            <article class="formula-card" data-category="calculus" data-keywords="power rule derivative differentiation tangent slope calculus d/dx a x n">
+                <div class="card-body">
+                    <div class="card-top-row">
+                        <span class="cat-badge badge-calculus">Calculus</span>
+                        <div class="card-copy-group">
+                            <button type="button" class="copy-formula-btn" data-copy="d/dx [a·xⁿ] = a·n·xⁿ⁻¹">Copy Formula</button>
+                            <button type="button" class="copy-card-btn">Copy All</button>
+                        </div>
+                    </div>
+                    <h3 class="card-title">10. Power Rule Derivative</h3>
+
+                    <div class="formula-display">
+                        <span class="frac"><span><i>d</i></span><span><i>dx</i></span></span>[<i>a</i>&thinsp;<i>x</i><sup><i>n</i></sup>] = <i>a</i>&thinsp;<i>n</i>&thinsp;<i>x</i><sup><i>n</i>&minus;1</sup>
+                    </div>
+
+                    <p class="card-explanation">Finds the instantaneous rate of change (derivative function <var>f</var>&prime;(<var>x</var>)) and evaluates the exact tangent slope at a point <var>x</var><sub>0</sub>.</p>
+
+                    <div class="var-legend">
+                        <span><var>a</var>: coefficient</span>
+                        <span><var>n</var>: exponent</span>
+                        <span><var>x</var><sub>0</sub>: evaluation point</span>
+                    </div>
+
+                    <div class="mode-tabs">
+                        <button type="button" class="mode-btn active" data-target="worked">Worked Example</button>
+                        <button type="button" class="mode-btn" data-target="solver">Live Solver (Lab)</button>
+                    </div>
+
+                    <div class="panel-content worked-panel active">
+                        <div class="worked-box">
+                            <div class="worked-problem">Differentiate <var>f</var>(<var>x</var>) = 4<var>x</var><sup>3</sup> and evaluate at <var>x</var><sub>0</sub> = 2.</div>
+                            <ol class="step-list">
+                                <li>
+                                    <span class="step-label">Step 1: Apply Power Rule</span>
+                                    <span class="step-math"><i>f</i>&prime;(<i>x</i>) = 4 &middot; 3 &middot; <i>x</i><sup>3&minus;1</sup> = 12<i>x</i><sup>2</sup></span>
+                                </li>
+                                <li>
+                                    <span class="step-label">Step 2: Evaluate Tangent Slope at x₀ = 2</span>
+                                    <span class="step-math"><i>f</i>&prime;(2) = 12(2)<sup>2</sup> = 12 &times; 4 = 48</span>
+                                </li>
+                            </ol>
+                            <div class="worked-answer"><i>f</i>&prime;(<i>x</i>) = 12<i>x</i><sup>2</sup> &nbsp;&bull;&nbsp; Slope <i>f</i>&prime;(2) = 48</div>
+                        </div>
+                    </div>
+
+                    <div class="panel-content solver-panel">
+                        <div class="solver-box" data-solver="derivative">
+                            <div class="solver-inputs">
+                                <div class="input-group">
+                                    <label>Coeff. <var>a</var></label>
+                                    <input type="number" step="any" data-var="a" value="4">
+                                </div>
+                                <div class="input-group">
+                                    <label>Exponent <var>n</var></label>
+                                    <input type="number" step="any" data-var="n" value="3">
+                                </div>
+                                <div class="input-group">
+                                    <label>Point <var>x</var><sub>0</sub></label>
+                                    <input type="number" step="any" data-var="x0" value="2">
+                                </div>
+                            </div>
+                            <div class="solver-actions">
+                                <button type="button" class="btn-solve">Solve Step-by-Step</button>
+                                <button type="button" class="btn-sample" data-sample='{"a":5,"n":4,"x0":-2}'>Load Example</button>
+                            </div>
+                            <div class="solver-output"></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 11. Definite Integral (Power Rule) -->
+            <article class="formula-card" data-category="calculus" data-keywords="definite integral antiderivative area under curve fundamental theorem calculus a b c n">
+                <div class="card-body">
+                    <div class="card-top-row">
+                        <span class="cat-badge badge-calculus">Calculus</span>
+                        <div class="card-copy-group">
+                            <button type="button" class="copy-formula-btn" data-copy="∫[a to b] c·xⁿ dx = (c·bⁿ⁺¹ − c·aⁿ⁺¹) / (n + 1)">Copy Formula</button>
+                            <button type="button" class="copy-card-btn">Copy All</button>
+                        </div>
+                    </div>
+                    <h3 class="card-title">11. Definite Integral (Power Rule)</h3>
+
+                    <div class="formula-display">
+                        <span class="int-wrap">
+                            <span class="int-symbol">&int;</span>
+                            <span class="int-bounds"><span><i>b</i></span><span><i>a</i></span></span>
+                        </span>
+                        <i>c</i>&thinsp;<i>x</i><sup><i>n</i></sup>&thinsp;<i>dx</i> = 
+                        <span class="frac">
+                            <span><i>c</i>&thinsp;<i>b</i><sup><i>n</i>+1</sup> &minus; <i>c</i>&thinsp;<i>a</i><sup><i>n</i>+1</sup></span>
+                            <span><i>n</i> + 1</span>
+                        </span>
+                    </div>
+
+                    <p class="card-explanation">Computes the signed area under <var>f</var>(<var>x</var>) = <var>cx</var><sup><var>n</var></sup> over [<var>a</var>, <var>b</var>] using the Fundamental Theorem of Calculus (<var>n</var> &ne; &minus;1).</p>
+
+                    <div class="var-legend">
+                        <span><var>c</var>: coeff.</span>
+                        <span><var>n</var>: power (&ne; &minus;1)</span>
+                        <span><var>a</var>, <var>b</var>: lower/upper limits</span>
+                    </div>
+
+                    <div class="mode-tabs">
+                        <button type="button" class="mode-btn active" data-target="worked">Worked Example</button>
+                        <button type="button" class="mode-btn" data-target="solver">Live Solver (Lab)</button>
+                    </div>
+
+                    <div class="panel-content worked-panel active">
+                        <div class="worked-box">
+                            <div class="worked-problem">Evaluate &int;<sub>1</sub><sup>3</sup> 3<var>x</var><sup>2</sup> <var>dx</var>.</div>
+                            <ol class="step-list">
+                                <li>
+                                    <span class="step-label">Step 1: Find Antiderivative F(x)</span>
+                                    <span class="step-math"><i>F</i>(<i>x</i>) = 3<i>x</i><sup>2+1</sup> / (2 + 1) = <i>x</i><sup>3</sup></span>
+                                </li>
+                                <li>
+                                    <span class="step-label">Step 2: Evaluate F(3) &minus; F(1)</span>
+                                    <span class="step-math"><i>F</i>(3) &minus; <i>F</i>(1) = 3<sup>3</sup> &minus; 1<sup>3</sup> = 27 &minus; 1 = 26</span>
+                                </li>
+                            </ol>
+                            <div class="worked-answer">Definite Integral Value: 26</div>
+                        </div>
+                    </div>
+
+                    <div class="panel-content solver-panel">
+                        <div class="solver-box" data-solver="integral">
+                            <div class="solver-inputs">
+                                <div class="input-group">
+                                    <label>Coeff. <var>c</var></label>
+                                    <input type="number" step="any" data-var="c" value="3">
+                                </div>
+                                <div class="input-group">
+                                    <label>Power <var>n</var> (&ne; &minus;1)</label>
+                                    <input type="number" step="any" data-var="n" value="2">
+                                </div>
+                                <div class="input-group">
+                                    <label>Lower <var>a</var></label>
+                                    <input type="number" step="any" data-var="a" value="1">
+                                </div>
+                                <div class="input-group">
+                                    <label>Upper <var>b</var></label>
+                                    <input type="number" step="any" data-var="b" value="3">
+                                </div>
+                            </div>
+                            <div class="solver-actions">
+                                <button type="button" class="btn-solve">Solve Step-by-Step</button>
+                                <button type="button" class="btn-sample" data-sample='{"c":4,"n":3,"a":0,"b":2}'>Load Example</button>
+                            </div>
+                            <div class="solver-output"></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 12. Average Rate of Change -->
+            <article class="formula-card" data-category="calculus" data-keywords="average rate of change difference quotient secant slope interval calculus a b f(x)">
+                <div class="card-body">
+                    <div class="card-top-row">
+                        <span class="cat-badge badge-calculus">Calculus</span>
+                        <div class="card-copy-group">
+                            <button type="button" class="copy-formula-btn" data-copy="AROC = (f(b) − f(a)) / (b − a) = (b² − a²) / (b − a)">Copy Formula</button>
+                            <button type="button" class="copy-card-btn">Copy All</button>
+                        </div>
+                    </div>
+                    <h3 class="card-title">12. Average Rate of Change (<var>f</var>(<var>x</var>) = <var>x</var><sup>2</sup>)</h3>
+
+                    <div class="formula-display">
+                        AROC = 
+                        <span class="frac">
+                            <span><i>f</i>(<i>b</i>) &minus; <i>f</i>(<i>a</i>)</span>
+                            <span><i>b</i> &minus; <i>a</i></span>
+                        </span>
+                        = 
+                        <span class="frac">
+                            <span><i>b</i><sup>2</sup> &minus; <i>a</i><sup>2</sup></span>
+                            <span><i>b</i> &minus; <i>a</i></span>
+                        </span>
+                    </div>
+
+                    <p class="card-explanation">Measures the slope of the secant line connecting (<var>a</var>, <var>f</var>(<var>a</var>)) and (<var>b</var>, <var>f</var>(<var>b</var>)) on <var>f</var>(<var>x</var>) = <var>x</var><sup>2</sup> over the closed interval [<var>a</var>, <var>b</var>].</p>
+
+                    <div class="var-legend">
+                        <span><var>a</var>: interval start</span>
+                        <span><var>b</var>: interval end (<var>b</var> &ne; <var>a</var>)</span>
+                    </div>
+
+                    <div class="mode-tabs">
+                        <button type="button" class="mode-btn active" data-target="worked">Worked Example</button>
+                        <button type="button" class="mode-btn" data-target="solver">Live Solver (Lab)</button>
+                    </div>
+
+                    <div class="panel-content worked-panel active">
+                        <div class="worked-box">
+                            <div class="worked-problem">Find the average rate of change of <var>f</var>(<var>x</var>) = <var>x</var><sup>2</sup> on [1, 4].</div>
+                            <ol class="step-list">
+                                <li>
+                                    <span class="step-label">Step 1: Evaluate Function Endpoints</span>
+                                    <span class="step-math"><i>f</i>(1) = 1<sup>2</sup> = 1, &nbsp; <i>f</i>(4) = 4<sup>2</sup> = 16</span>
+                                </li>
+                                <li>
+                                    <span class="step-label">Step 2: Compute Difference Quotient</span>
+                                    <span class="step-math">AROC = (16 &minus; 1) / (4 &minus; 1) = 15 / 3 = 5</span>
+                                </li>
+                            </ol>
+                            <div class="worked-answer">Average Rate of Change (Secant Slope): 5</div>
+                        </div>
+                    </div>
+
+                    <div class="panel-content solver-panel">
+                        <div class="solver-box" data-solver="aroc">
+                            <div class="solver-inputs">
+                                <div class="input-group">
+                                    <label>Start <var>a</var></label>
+                                    <input type="number" step="any" data-var="a" value="1">
+                                </div>
+                                <div class="input-group">
+                                    <label>End <var>b</var> (&ne; <var>a</var>)</label>
+                                    <input type="number" step="any" data-var="b" value="4">
+                                </div>
+                            </div>
+                            <div class="solver-actions">
+                                <button type="button" class="btn-solve">Solve Step-by-Step</button>
+                                <button type="button" class="btn-sample" data-sample='{"a":-2,"b":5}'>Load Example</button>
+                            </div>
+                            <div class="solver-output"></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+        </section>
+
+        <div id="emptyState" class="empty-state">
+            <h3 style="font-size: 1.05rem; margin-bottom: 0.35rem;">No matching formulas found</h3>
+            <p style="font-size: 0.85rem; color: var(--ink-muted);">Try clearing your search term or switching back to "All Formulas (12)".</p>
+        </div>
+    </main>
+
+    <div id="toast" role="status" aria-live="polite"></div>
+
+    <script>
+        (function () {
+            const THEME_KEY = 'principia_math_theme';
+            const htmlEl = document.documentElement;
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            const themeLabel = document.getElementById('themeLabel');
+            const toastEl = document.getElementById('toast');
+
+            let activeCategory = 'all';
+            let searchQuery = '';
+            let toastTimer = null;
+
+            /* 1. Theme Persistence */
+            function applyTheme(theme) {
+                if (theme === 'dark') {
+                    htmlEl.classList.add('dark');
+                    themeIcon.innerHTML = '&#9728;';
+                    themeLabel.textContent = 'Light Mode';
+                } else {
+                    htmlEl.classList.remove('dark');
+                    themeIcon.innerHTML = '&#9790;';
+                    themeLabel.textContent = 'Dark Mode';
+                }
+            }
+
+            try {
+                const savedTheme = localStorage.getItem(THEME_KEY);
+                if (savedTheme === 'dark' || savedTheme === 'light') {
+                    applyTheme(savedTheme);
+                } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    applyTheme('dark');
+                }
+            } catch (e) {
+                console.warn('localStorage unavailable for theme:', e);
+            }
+
+            themeToggle.addEventListener('click', () => {
+                const isDark = htmlEl.classList.contains('dark');
+                const nextTheme = isDark ? 'light' : 'dark';
+                applyTheme(nextTheme);
+                try {
+                    localStorage.setItem(THEME_KEY, nextTheme);
+                } catch (e) {}
+            });
+
+            /* 2. Formatting & Clipboard Utilities */
+            function fmt(num) {
+                if (!Number.isFinite(num)) return String(num);
+                if (Math.abs(num) < 1e-12) return '0';
+                const rounded = Math.round(num * 10000) / 10000;
+                return Number.isInteger(rounded) ? rounded.toString() : rounded.toString();
+            }
+
+            function fmtCurrency(num) {
+                return Number(num).toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+            }
+
+            function showToast(msg) {
+                clearTimeout(toastTimer);
+                toastEl.textContent = msg;
+                toastEl.classList.add('show');
+                toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2400);
+            }
+
+            function fallbackCopy(text, label) {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    showToast(label);
+                } catch (err) {
+                    showToast('Unable to copy text.');
+                }
+                document.body.removeChild(textarea);
+            }
+
+            function copyText(text, label = 'Copied to clipboard!') {
+                if (navigator.clipboard && window.isSecureContext) {
+                    navigator.clipboard.writeText(text)
+                        .then(() => showToast(label))
+                        .catch(() => fallbackCopy(text, label));
+                } else {
+                    fallbackCopy(text, label);
+                }
+            }
+
+            function extractFullCardText(card) {
+                const title = (card.querySelector('.card-title')?.textContent || '').trim();
+                const formulaBtnCopy = card.querySelector('.copy-formula-btn')?.dataset.copy || '';
+                const explanation = (card.querySelector('.card-explanation')?.textContent || '').trim();
+                const legend = Array.from(card.querySelectorAll('.var-legend span'))
+                    .map(s => s.textContent.trim())
+                    .join(' | ');
+                const workedProblem = (card.querySelector('.worked-problem')?.textContent || '').trim();
+                const workedSteps = Array.from(card.querySelectorAll('.worked-box .step-list li'))
+                    .map(li => {
+                        const lbl = (li.querySelector('.step-label')?.textContent || '').trim();
+                        const mth = (li.querySelector('.step-math')?.textContent || '').trim();
+                        return `- ${lbl}: ${mth}`;
+                    })
+                    .join('\n');
+                const workedAns = (card.querySelector('.worked-answer')?.textContent || '').trim();
+
+                return [
+                    title,
+                    `Formula: ${formulaBtnCopy}`,
+                    explanation,
+                    legend ? `Variables: ${legend}` : '',
+                    workedProblem ? `Worked Example: ${workedProblem}` : '',
+                    workedSteps,
+                    workedAns ? `Answer: ${workedAns}` : ''
+                ].filter(Boolean).join('\n');
+            }
+
+            /* 3. Category Filtering & Real-Time Search */
+            const catTabs = document.querySelectorAll('.cat-tab');
+            const searchInput = document.getElementById('searchInput');
+            const cards = document.querySelectorAll('.formula-card');
+            const resultsCounter = document.getElementById('resultsCounter');
+            const emptyState = document.getElementById('emptyState');
+
+            function filterCards() {
+                let visibleCount = 0;
+                const q = searchQuery.trim().toLowerCase();
+
+                cards.forEach(card => {
+                    const cat = card.dataset.category;
+                    const keywords = (card.dataset.keywords || '').toLowerCase();
+                    const text = card.textContent.toLowerCase();
+
+                    const matchesCat = activeCategory === 'all' || cat === activeCategory;
+                    const matchesQuery = q === '' || keywords.includes(q) || text.includes(q);
+
+                    if (matchesCat && matchesQuery) {
+                        card.classList.remove('hidden');
+                        visibleCount++;
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+
+                resultsCounter.textContent = `Showing ${visibleCount} of ${cards.length} formulas`;
+                emptyState.classList.toggle('visible', visibleCount === 0);
+            }
+
+            catTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    activeCategory = tab.dataset.filter;
+                    catTabs.forEach(t => t.classList.toggle('active', t === tab));
+                    filterCards();
+                });
+            });
+
+            searchInput.addEventListener('input', (e) => {
+                searchQuery = e.target.value;
+                filterCards();
+            });
+
+            /* 4. Event Delegation for Copy, Mode Switcher, Sample & Solve */
+            document.addEventListener('click', (e) => {
+                const copyBtn = e.target.closest('.copy-formula-btn');
+                if (copyBtn) {
+                    copyText(copyBtn.dataset.copy, 'Formula copied!');
+                    return;
+                }
+
+                const copyCardBtn = e.target.closest('.copy-card-btn');
+                if (copyCardBtn) {
+                    const card = copyCardBtn.closest('.formula-card');
+                    if (card) {
+                        copyText(extractFullCardText(card), 'Full formula card copied!');
+                    }
+                    return;
+                }
+
+                const modeBtn = e.target.closest('.mode-btn');
+                if (modeBtn) {
+                    const cardBody = modeBtn.closest('.card-body');
+                    const target = modeBtn.dataset.target;
+
+                    cardBody.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b === modeBtn));
+                    cardBody.querySelector('.worked-panel').classList.toggle('active', target === 'worked');
+                    cardBody.querySelector('.solver-panel').classList.toggle('active', target === 'solver');
+                    syncCardHeights();
+                    return;
+                }
+
+                const sampleBtn = e.target.closest('.btn-sample');
+                if (sampleBtn) {
+                    const solverBox = sampleBtn.closest('.solver-box');
+                    const sampleData = JSON.parse(sampleBtn.dataset.sample);
+                    Object.entries(sampleData).forEach(([key, val]) => {
+                        const input = solverBox.querySelector(`input[data-var="${key}"]`);
+                        if (input) input.value = val;
+                    });
+                    runSolver(solverBox);
+                    return;
+                }
+
+                const solveBtn = e.target.closest('.btn-solve');
+                if (solveBtn) {
+                    const solverBox = solveBtn.closest('.solver-box');
+                    runSolver(solverBox);
+                    return;
+                }
+
+                const copySolBtn = e.target.closest('.copy-solution-btn');
+                if (copySolBtn) {
+                    copyText(copySolBtn.dataset.plain, 'Step-by-step solution copied!');
+                }
+            });
+
+            /* Synchronize row heights so cards in the same visual row always match evenly */
+            function syncCardHeights() {
+                const visibleCards = Array.from(cards).filter(c => !c.classList.contains('hidden'));
+                visibleCards.forEach(c => {
+                    c.style.minHeight = '';
+                });
+
+                if (window.innerWidth <= 640 || visibleCards.length === 0) return;
+
+                const rows = new Map();
+                visibleCards.forEach(c => {
+                    const top = Math.round(c.getBoundingClientRect().top);
+                    if (!rows.has(top)) rows.set(top, []);
+                    rows.get(top).push(c);
+                });
+
+                rows.forEach(rowCards => {
+                    if (rowCards.length < 2) return;
+                    let maxHeight = 0;
+                    rowCards.forEach(c => {
+                        const h = c.getBoundingClientRect().height;
+                        if (h > maxHeight) maxHeight = h;
+                    });
+                    rowCards.forEach(c => {
+                        c.style.minHeight = `${Math.ceil(maxHeight)}px`;
+                    });
+                });
+            }
+
+            window.addEventListener('resize', syncCardHeights);
+            if (document.fonts && document.fonts.ready) {
+                document.fonts.ready.then(syncCardHeights);
+            }
+            window.addEventListener('load', syncCardHeights);
+
+            /* 5. Step-by-Step Solvers (Formula Lab Engine) */
+            function getInputs(solverBox) {
+                const values = {};
+                const inputs = solverBox.querySelectorAll('input[data-var]');
+                for (const inp of inputs) {
+                    const val = parseFloat(inp.value);
+                    if (inp.value.trim() === '' || Number.isNaN(val) || !Number.isFinite(val)) {
+                        return { error: `Please enter a valid number for "${inp.dataset.var}".` };
+                    }
+                    values[inp.dataset.var] = val;
+                }
+                return { values };
+            }
+
+            function renderSolution(outputEl, steps, finalHtml, plainText) {
+                const stepsHtml = steps.map((s, idx) => `
+                    <li>
+                        <span class="step-label">Step ${idx + 1}: ${s.label}</span>
+                        <span class="step-math">${s.math}</span>
+                    </li>
+                `).join('');
+
+                outputEl.innerHTML = `
+                    <div class="output-header">
+                        <span>Generated Solution</span>
+                        <button type="button" class="copy-solution-btn" data-plain="${plainText.replace(/"/g, '&quot;')}">Copy Steps</button>
+                    </div>
+                    <ol class="step-list">${stepsHtml}</ol>
+                    <div class="final-highlight">${finalHtml}</div>
+                `;
+                outputEl.classList.add('visible');
+                syncCardHeights();
+            }
+
+            function renderError(outputEl, msg) {
+                outputEl.innerHTML = `<div class="solver-error">${msg}</div>`;
+                outputEl.classList.add('visible');
+                syncCardHeights();
+            }
+
+            function runSolver(solverBox) {
+                const type = solverBox.dataset.solver;
+                const outputEl = solverBox.querySelector('.solver-output');
+                const { values, error } = getInputs(solverBox);
+
+                if (error) {
+                    renderError(outputEl, error);
+                    return;
+                }
+
+                switch (type) {
+                    case 'quadratic': {
+                        const { a, b, c } = values;
+                        if (a === 0) {
+                            renderError(outputEl, 'Coefficient a cannot be 0 (otherwise the equation is linear, not quadratic).');
+                            return;
+                        }
+                        const disc = b * b - 4 * a * c;
+                        const negB = -b;
+                        const twoA = 2 * a;
+
+                        const steps = [
+                            {
+                                label: 'Substitute into Discriminant (Δ = b² − 4ac)',
+                                math: `Δ = (${fmt(b)})² − 4(${fmt(a)})(${fmt(c)}) = ${fmt(b * b)} − (${fmt(4 * a * c)}) = ${fmt(disc)}`
+                            }
+                        ];
+
+                        if (disc > 0) {
+                            const sqrtD = Math.sqrt(disc);
+                            const x1 = (negB + sqrtD) / twoA;
+                            const x2 = (negB - sqrtD) / twoA;
+                            steps.push({
+                                label: 'Two Distinct Real Roots (Δ > 0)',
+                                math: `x = (${fmt(negB)} ± √${fmt(disc)}) / ${fmt(twoA)} = (${fmt(negB)} ± ${fmt(sqrtD)}) / ${fmt(twoA)}`
+                            });
+                            renderSolution(
+                                outputEl,
+                                steps,
+                                `Real Roots: <i>x</i><sub>1</sub> = ${fmt(x1)}, &nbsp; <i>x</i><sub>2</sub> = ${fmt(x2)}`,
+                                `Quadratic Formula (a=${a}, b=${b}, c=${c}): Δ=${fmt(disc)}, x1=${fmt(x1)}, x2=${fmt(x2)}`
+                            );
+                        } else if (disc === 0) {
+                            const x = negB / twoA;
+                            steps.push({
+                                label: 'One Repeated Real Root (Δ = 0)',
+                                math: `x = ${fmt(negB)} / ${fmt(twoA)} = ${fmt(x)}`
+                            });
+                            renderSolution(
+                                outputEl,
+                                steps,
+                                `Repeated Real Root: <i>x</i> = ${fmt(x)}`,
+                                `Quadratic Formula (a=${a}, b=${b}, c=${c}): Δ=0, Repeated root x=${fmt(x)}`
+                            );
+                        } else {
+                            const realPart = negB / twoA;
+                            const imagPart = Math.abs(Math.sqrt(-disc) / twoA);
+                            steps.push({
+                                label: 'Complex Conjugate Roots (Δ < 0)',
+                                math: `x = (${fmt(negB)} ± i√${fmt(-disc)}) / ${fmt(twoA)} = ${fmt(realPart)} ± ${fmt(imagPart)}i`
+                            });
+                            renderSolution(
+                                outputEl,
+                                steps,
+                                `Complex Roots: <i>x</i> = ${fmt(realPart)} + ${fmt(imagPart)}<i>i</i>, &nbsp; ${fmt(realPart)} &minus; ${fmt(imagPart)}<i>i</i>`,
+                                `Quadratic Formula (a=${a}, b=${b}, c=${c}): Δ=${fmt(disc)}, Complex roots ${fmt(realPart)} ± ${fmt(imagPart)}i`
+                            );
+                        }
+                        break;
+                    }
+
+                    case 'slope': {
+                        const { x1, y1, x2, y2 } = values;
+                        const dx = x2 - x1;
+                        const dy = y2 - y1;
+                        if (dx === 0) {
+                            renderError(outputEl, `Vertical line detected (x₂ − x₁ = 0). Slope is undefined; line equation is x = ${fmt(x1)}.`);
+                            return;
+                        }
+                        const m = dy / dx;
+                        const b = y1 - m * x1;
+                        const signB = b >= 0 ? `+ ${fmt(b)}` : `− ${fmt(Math.abs(b))}`;
+
+                        const steps = [
+                            {
+                                label: 'Compute Slope m = (y₂ − y₁) / (x₂ − x₁)',
+                                math: `m = (${fmt(y2)} − ${fmt(y1)}) / (${fmt(x2)} − ${fmt(x1)}) = ${fmt(dy)} / ${fmt(dx)} = ${fmt(m)}`
+                            },
+                            {
+                                label: 'Solve for y-Intercept (b = y₁ − m·x₁)',
+                                math: `b = ${fmt(y1)} − (${fmt(m)})(${fmt(x1)}) = ${fmt(b)}`
+                            }
+                        ];
+                        renderSolution(
+                            outputEl,
+                            steps,
+                            `<i>y</i> = ${fmt(m)}<i>x</i> ${signB} &nbsp;(<i>m</i> = ${fmt(m)}, <i>b</i> = ${fmt(b)})`,
+                            `Line through (${x1},${y1}) and (${x2},${y2}): m=${fmt(m)}, b=${fmt(b)}, y = ${fmt(m)}x ${signB}`
+                        );
+                        break;
+                    }
+
+                    case 'compound': {
+                        const { P, r, n, t } = values;
+                        if (P < 0 || n <= 0 || t < 0) {
+                            renderError(outputEl, 'Principal P and time t must be non-negative, and compounding frequency n must be > 0.');
+                            return;
+                        }
+                        const rateDec = r / 100;
+                        const base = 1 + rateDec / n;
+                        const periods = n * t;
+                        const A = P * Math.pow(base, periods);
+                        const interest = A - P;
+
+                        const steps = [
+                            {
+                                label: 'Periodic Growth Factor (1 + r/n)',
+                                math: `1 + (${fmt(rateDec)} / ${fmt(n)}) = ${fmt(base)}`
+                            },
+                            {
+                                label: 'Total Compounding Periods (nt)',
+                                math: `nt = ${fmt(n)} × ${fmt(t)} = ${fmt(periods)}`
+                            },
+                            {
+                                label: 'Evaluate A = P · (1 + r/n)^(nt)',
+                                math: `A = ${fmtCurrency(P)} × (${fmt(base)})^${fmt(periods)} = ${fmtCurrency(A)}`
+                            }
+                        ];
+                        renderSolution(
+                            outputEl,
+                            steps,
+                            `Final Amount: <i>A</i> = ${fmtCurrency(A)} &nbsp;(Interest: ${fmtCurrency(interest)})`,
+                            `Compound Interest (P=${P}, r=${r}%, n=${n}, t=${t}): A=${fmtCurrency(A)}, Interest=${fmtCurrency(interest)}`
+                        );
+                        break;
+                    }
+
+                    case 'pythagorean': {
+                        const { a, b } = values;
+                        if (a <= 0 || b <= 0) {
+                            renderError(outputEl, 'Triangle leg lengths a and b must both be greater than 0.');
+                            return;
+                        }
+                        const a2 = a * a;
+                        const b2 = b * b;
+                        const sum = a2 + b2;
+                        const c = Math.sqrt(sum);
+
+                        const steps = [
+                            {
+                                label: 'Sum the Squares of Legs (a² + b²)',
+                                math: `c² = (${fmt(a)})² + (${fmt(b)})² = ${fmt(a2)} + ${fmt(b2)} = ${fmt(sum)}`
+                            },
+                            {
+                                label: 'Take Principal Square Root',
+                                math: `c = √${fmt(sum)} = ${fmt(c)}`
+                            }
+                        ];
+                        renderSolution(
+                            outputEl,
+                            steps,
+                            `Hypotenuse: <i>c</i> = ${fmt(c)}`,
+                            `Pythagorean Theorem (a=${a}, b=${b}): c²=${fmt(sum)}, c=${fmt(c)}`
+                        );
+                        break;
+                    }
+
+                    case 'circle': {
+                        const { r } = values;
+                        if (r <= 0) {
+                            renderError(outputEl, 'Circle radius r must be greater than 0.');
+                            return;
+                        }
+                        const area = Math.PI * r * r;
+                        const circ = 2 * Math.PI * r;
+
+                        const steps = [
+                            {
+                                label: 'Compute Interior Area (A = πr²)',
+                                math: `A = π(${fmt(r)})² = ${fmt(r * r)}π ≈ ${fmt(area)}`
+                            },
+                            {
+                                label: 'Compute Circumference (C = 2πr)',
+                                math: `C = 2π(${fmt(r)}) = ${fmt(2 * r)}π ≈ ${fmt(circ)}`
+                            }
+                        ];
+                        renderSolution(
+                            outputEl,
+                            steps,
+                            `Area: <i>A</i> &approx; ${fmt(area)} &nbsp;&bull;&nbsp; Circumference: <i>C</i> &approx; ${fmt(circ)}`,
+                            `Circle (r=${r}): Area=${fmt(area)}, Circumference=${fmt(circ)}`
+                        );
+                        break;
+                    }
+
+                    case 'cylinder': {
+                        const { r, h } = values;
+                        if (r <= 0 || h <= 0) {
+                            renderError(outputEl, 'Cylinder radius r and height h must both be greater than 0.');
+                            return;
+                        }
+                        const vol = Math.PI * r * r * h;
+                        const lat = 2 * Math.PI * r * h;
+                        const bases = 2 * Math.PI * r * r;
+                        const sa = lat + bases;
+
+                        const steps = [
+                            {
+                                label: 'Compute Volume (V = πr²h)',
+                                math: `V = π(${fmt(r)})²(${fmt(h)}) = ${fmt(r * r * h)}π ≈ ${fmt(vol)}`
+                            },
+                            {
+                                label: 'Compute Lateral + Two Circular Bases (SA)',
+                                math: `SA = 2π(${fmt(r)})(${fmt(h)}) + 2π(${fmt(r)})² ≈ ${fmt(lat)} + ${fmt(bases)} = ${fmt(sa)}`
+                            }
+                        ];
+                        renderSolution(
+                            outputEl,
+                            steps,
+                            `Volume: <i>V</i> &approx; ${fmt(vol)} &nbsp;&bull;&nbsp; Surface Area: <i>SA</i> &approx; ${fmt(sa)}`,
+                            `Cylinder (r=${r}, h=${h}): V=${fmt(vol)}, SA=${fmt(sa)}`
+                        );
+                        break;
+                    }
+
+                    case 'cosines': {
+                        const { a, b, C } = values;
+                        if (a <= 0 || b <= 0) {
+                            renderError(outputEl, 'Triangle sides a and b must be greater than 0.');
+                            return;
+                        }
+                        if (C <= 0 || C >= 180) {
+                            renderError(outputEl, 'Included triangle angle C must be strictly between 0° and 180°.');
+                            return;
+                        }
+                        const rad = (C * Math.PI) / 180;
+                        const cosC = Math.cos(rad);
+                        const c2 = a * a + b * b - 2 * a * b * cosC;
+                        const c = Math.sqrt(Math.max(0, c2));
+
+                        const steps = [
+                            {
+                                label: 'Convert Angle C to Radians & Evaluate cos(C)',
+                                math: `cos(${fmt(C)}°) = cos(${fmt(rad)} rad) ≈ ${fmt(cosC)}`
+                            },
+                            {
+                                label: 'Compute c² = a² + b² − 2ab·cos(C)',
+                                math: `c² = ${fmt(a * a)} + ${fmt(b * b)} − 2(${fmt(a)})(${fmt(b)})(${fmt(cosC)}) = ${fmt(c2)}`
+                            },
+                            {
+                                label: 'Take Square Root for Side c',
+                                math: `c = √${fmt(c2)} ≈ ${fmt(c)}`
+                            }
+                        ];
+                        renderSolution(
+                            outputEl,
+                            steps,
+                            `Side <i>c</i> &approx; ${fmt(c)}`,
+                            `Law of Cosines (a=${a}, b=${b}, C=${C}°): c²=${fmt(c2)}, c=${fmt(c)}`
+                        );
+                        break;
+                    }
+
+                    case 'sohcahtoa': {
+                        const { opp, adj } = values;
+                        if (opp <= 0 || adj <= 0) {
+                            renderError(outputEl, 'Opposite and Adjacent sides must both be greater than 0.');
+                            return;
+                        }
+                        const hyp = Math.hypot(opp, adj);
+                        const rad = Math.atan2(opp, adj);
+                        const deg = (rad * 180) / Math.PI;
+                        const sinVal = opp / hyp;
+                        const cosVal = adj / hyp;
+                        const tanVal = opp / adj;
+
+                        const steps = [
+                            {
+                                label: 'Compute Hypotenuse (√(Opp² + Adj²))',
+                                math: `Hyp = √(${fmt(opp)}² + ${fmt(adj)}²) = √${fmt(opp * opp + adj * adj)} = ${fmt(hyp)}`
+                            },
+                            {
+                                label: 'Calculate Angle θ = arctan(Opp / Adj)',
+                                math: `θ = arctan(${fmt(opp)} / ${fmt(adj)}) = ${fmt(deg)}° (${fmt(rad)} rad)`
+                            },
+                            {
+                                label: 'Compute Trig Ratios',
+                                math: `sin(θ) = ${fmt(sinVal)},  cos(θ) = ${fmt(cosVal)},  tan(θ) = ${fmt(tanVal)}`
+                            }
+                        ];
+                        renderSolution(
+                            outputEl,
+                            steps,
+                            `Hyp = ${fmt(hyp)}, &nbsp; &theta; = ${fmt(deg)}&deg; &nbsp;&bull;&nbsp; sin=${fmt(sinVal)}, cos=${fmt(cosVal)}, tan=${fmt(tanVal)}`,
+                            `SOH-CAH-TOA (Opp=${opp}, Adj=${adj}): Hyp=${fmt(hyp)}, θ=${fmt(deg)}°, sin=${fmt(sinVal)}, cos=${fmt(cosVal)}, tan=${fmt(tanVal)}`
+                        );
+                        break;
+                    }
+
+                    case 'sector': {
+                        const { r, deg } = values;
+                        if (r <= 0 || deg <= 0 || deg > 360) {
+                            renderError(outputEl, 'Radius r must be > 0 and central angle θ must be between 0° and 360°.');
+                            return;
+                        }
+                        const rad = (deg * Math.PI) / 180;
+                        const arc = r * rad;
+                        const area = 0.5 * r * r * rad;
+
+                        const steps = [
+                            {
+                                label: 'Convert Central Angle to Radians (θ · π/180)',
+                                math: `θ = ${fmt(deg)}° × (π / 180) ≈ ${fmt(rad)} rad`
+                            },
+                            {
+                                label: 'Compute Arc Length (s = rθ) & Sector Area (A = ½r²θ)',
+                                math: `s = ${fmt(r)} × ${fmt(rad)} ≈ ${fmt(arc)},   A = 0.5 × ${fmt(r)}² × ${fmt(rad)} ≈ ${fmt(area)}`
+                            }
+                        ];
+                        renderSolution(
+                            outputEl,
+                            steps,
+                            `Arc Length: <i>s</i> &approx; ${fmt(arc)} &nbsp;&bull;&nbsp; Sector Area: <i>A</i> &approx; ${fmt(area)}`,
+                            `Sector (r=${r}, θ=${deg}°): θ_rad=${fmt(rad)}, s=${fmt(arc)}, A=${fmt(area)}`
+                        );
+                        break;
+                    }
+
+                    case 'derivative': {
+                        const { a, n, x0 } = values;
+                        if (n <= 1 && x0 === 0 && n !== 1) {
+                            renderError(outputEl, 'Division by zero encountered when evaluating x₀ = 0 with exponent n < 1.');
+                            return;
+                        }
+                        const newCoeff = a * n;
+                        const newExp = n - 1;
+                        const slope = newCoeff === 0 ? 0 : newCoeff * Math.pow(x0, newExp);
+
+                        const derivExpr = newCoeff === 0
+                            ? '0'
+                            : newExp === 0
+                                ? `${fmt(newCoeff)}`
+                                : newExp === 1
+                                    ? `${fmt(newCoeff)}x`
+                                    : `${fmt(newCoeff)}x^${fmt(newExp)}`;
+
+                        const steps = [
+                            {
+                                label: 'Apply Power Rule: d/dx [a·xⁿ] = a·n·xⁿ⁻¹',
+                                math: `f′(x) = (${fmt(a)})(${fmt(n)})x^(${fmt(n)} − 1) = ${derivExpr}`
+                            },
+                            {
+                                label: `Evaluate Derivative at x₀ = ${fmt(x0)}`,
+                                math: `f′(${fmt(x0)}) = ${fmt(newCoeff)} · (${fmt(x0)})^${fmt(newExp)} = ${fmt(slope)}`
+                            }
+                        ];
+                        renderSolution(
+                            outputEl,
+                            steps,
+                            `<i>f</i>&prime;(<i>x</i>) = ${derivExpr} &nbsp;&bull;&nbsp; Slope <i>f</i>&prime;(${fmt(x0)}) = ${fmt(slope)}`,
+                            `Power Rule Derivative of ${a}x^${n} at x0=${x0}: f'(x)=${derivExpr}, f'(${x0})=${fmt(slope)}`
+                        );
+                        break;
+                    }
+
+                    case 'integral': {
+                        const { c, n, a, b } = values;
+                        if (n === -1) {
+                            renderError(outputEl, 'Power rule integration requires n ≠ −1 (for n = −1, ∫ c/x dx = c·ln|x|).');
+                            return;
+                        }
+                        if (n < 0 && ((a <= 0 && b >= 0) || (b <= 0 && a >= 0))) {
+                            renderError(outputEl, 'Improper integral: interval [a, b] crosses x = 0 with a negative exponent.');
+                            return;
+                        }
+                        const newExp = n + 1;
+                        const antiCoeff = c / newExp;
+                        const Fb = antiCoeff * Math.pow(b, newExp);
+                        const Fa = antiCoeff * Math.pow(a, newExp);
+                        const area = Fb - Fa;
+
+                        const steps = [
+                            {
+                                label: 'Find Antiderivative F(x) = c·xⁿ⁺¹ / (n + 1)',
+                                math: `F(x) = (${fmt(c)} / ${fmt(newExp)}) x^${fmt(newExp)} = ${fmt(antiCoeff)}x^${fmt(newExp)}`
+                            },
+                            {
+                                label: 'Evaluate Upper & Lower Bounds F(b) − F(a)',
+                                math: `F(${fmt(b)}) − F(${fmt(a)}) = ${fmt(Fb)} − (${fmt(Fa)}) = ${fmt(area)}`
+                            }
+                        ];
+                        renderSolution(
+                            outputEl,
+                            steps,
+                            `Definite Integral: &int;<sub>${fmt(a)}</sub><sup>${fmt(b)}</sup> ${fmt(c)}<i>x</i><sup>${fmt(n)}</sup> <i>dx</i> = ${fmt(area)}`,
+                            `Definite Integral of ${c}x^${n} from ${a} to ${b}: F(x)=${fmt(antiCoeff)}x^${fmt(newExp)}, Value=${fmt(area)}`
+                        );
+                        break;
+                    }
+
+                    case 'aroc': {
+                        const { a, b } = values;
+                        if (a === b) {
+                            renderError(outputEl, 'Interval endpoints a and b must be distinct (b ≠ a) to avoid division by zero.');
+                            return;
+                        }
+                        const fa = a * a;
+                        const fb = b * b;
+                        const num = fb - fa;
+                        const den = b - a;
+                        const aroc = num / den;
+
+                        const steps = [
+                            {
+                                label: 'Evaluate f(x) = x² at Interval Endpoints',
+                                math: `f(${fmt(a)}) = (${fmt(a)})² = ${fmt(fa)},   f(${fmt(b)}) = (${fmt(b)})² = ${fmt(fb)}`
+                            },
+                            {
+                                label: 'Compute Difference Quotient (f(b) − f(a)) / (b − a)',
+                                math: `AROC = (${fmt(fb)} − ${fmt(fa)}) / (${fmt(b)} − ${fmt(a)}) = ${fmt(num)} / ${fmt(den)} = ${fmt(aroc)}`
+                            }
+                        ];
+                        renderSolution(
+                            outputEl,
+                            steps,
+                            `Average Rate of Change on [${fmt(a)}, ${fmt(b)}]: ${fmt(aroc)}`,
+                            `Average Rate of Change of f(x)=x² on [${a}, ${b}]: (${fmt(fb)}-${fmt(fa)})/(${fmt(b)}-${fmt(a)}) = ${fmt(aroc)}`
+                        );
+                        break;
+                    }
+                }
+            }
+        })();
+    </script>
+</body>
+</html>
